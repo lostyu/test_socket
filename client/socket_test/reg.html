@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>login</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+    用户名<input id="username" name="username" type="text" /> 密码<input
+      id="password"
+      name="password"
+      type="password"
+    />
+    <button id="btn1">提交</button>
+
+    <script>
+      $(function () {
+        const url = "http://localhost:8888/api/reg";
+
+        $("#btn1").on("click", function () {
+          const username = $("#username").val();
+          const password = $("#password").val();
+
+          $.ajax({
+            url,
+            method: "POST",
+            data: { username, password },
+          })
+            .then((res) => {
+              alert(res.msg);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
