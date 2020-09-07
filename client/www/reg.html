@@ -18,6 +18,12 @@
       $(function () {
         const url = "http://localhost:8888/api/reg";
 
+        $(document).keyup(function (event) {
+          if (event.keyCode == 13) {
+            $("#btn1").trigger("click");
+          }
+        });
+
         $("#btn1").on("click", function () {
           const username = $("#username").val();
           const password = $("#password").val();
@@ -29,6 +35,9 @@
           })
             .then((res) => {
               alert(res.msg);
+              if (res.ok) {
+                window.location.href = "/login";
+              }
             })
             .catch((err) => {
               console.error(err);

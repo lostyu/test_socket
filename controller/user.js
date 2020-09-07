@@ -2,6 +2,18 @@ const User = require("../models/User");
 const { md5 } = require("../lib/md5");
 
 module.exports = {
+  async getUserByName(username) {
+    const user = await User.findOne({
+      where: {
+        username,
+      },
+    });
+    if (user) {
+      return { ok: true, msg: "", data: user };
+    } else {
+      return { ok: false, msg: "未找到该用户" };
+    }
+  },
   async getAll() {
     const res = await User.findAll();
     return res;
@@ -16,12 +28,17 @@ module.exports = {
     });
 
     if (user) {
-      user.expirse = Date.now();
+      user.expires = Date.now() + 86400 * 1000;
       await user.save();
       return {
         ok: true,
         msg: "登录成功",
-        data: { id: user.id, username: user.username, expirse: user.expirse },
+        data: {
+          id: user.id,
+          role: user.role,
+          username: user.username,
+          expires: user.expires,
+        },
       };
     } else {
       return { ok: false, msg: "用户名或密码错误" };
@@ -40,6 +57,7 @@ module.exports = {
       const res = await User.create({
         username,
         password,
+        role: "customer",
       });
       if (res) {
         return { ok: true, msg: "注册成功" };

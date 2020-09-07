@@ -1,29 +1,35 @@
 $(function () {
   const socket = io("http://localhost:8888");
   const $userList = $("#userList");
-  const user = "admin_" + Math.floor(Math.random() * 10000);
+  // const user = "admin_" + Math.floor(Math.random() * 10000);
+  const cookie = $.cookie("client_user");
+  const _user = cookie ? JSON.parse(cookie) : "";
+  const user = _user.username;
   const $user = $("#user");
 
   $user.val(user);
 
-  socket.on("userList", (users) => {
-    flushUser($userList, users);
-  });
+  // socket.on("userList", (users) => {
+  //   flushUser($userList, users);
+  // });
 
-  socket.on("online", ({ user, users }) => {
-    console.log(`${user}上线`, users);
-    flushUser($userList, users);
-  });
+  // socket.on("online", ({ user, users }) => {
+  //   console.log(`${user}上线`, users);
+  //   flushUser($userList, users);
+  // });
 
-  socket.on("offline", ({ user, users }) => {
-    if (user) {
-      console.log(`${user}下线`, users);
-    }
-    flushUser($userList, users);
-  });
+  // socket.on("offline", ({ user, users }) => {
+  //   if (user) {
+  //     console.log(`${user}下线`, users);
+  //   }
+  //   flushUser($userList, users);
+  // });
 
-  socket.on("create", ({ user, users }) => {
-    createRoom(user, users);
+  socket.on("create", (roomList) => {
+    console.log(roomList);
+    // console.log(123);
+    // flushUser($list, users);
+    // createRoom(user, users);
   });
 
   socket.on("leave", ({ user, users }) => {
@@ -46,6 +52,7 @@ $(function () {
       html = `${user}`;
     }
     $(`#${user}`).html(html);
+    flushUser($list, users);
   }
 
   function flushUser($list, users) {

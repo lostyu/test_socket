@@ -1,29 +1,26 @@
 const Sequelize = require("sequelize");
 const db = require("../db/db");
 
-const User = db.define(
-  "users",
+const Room = db.define(
+  "rooms",
   {
     id: {
       type: Sequelize.INTEGER(11),
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: Sequelize.STRING(100),
+    roomNum: {
+      type: Sequelize.INTEGER(11),
       allowNull: false,
       unique: true,
     },
-    password: {
+    createUser: {
       type: Sequelize.STRING(32),
       allowNull: false,
     },
-    role: {
-      type: Sequelize.STRING(32),
-      allowNull: false,
-    },
-    expires: {
-      type: Sequelize.STRING(100),
+    status: {
+      type: Sequelize.INTEGER(10),
+      defaultValue: 1, // 1请求通话     //2通话中       //0通话结束
     },
   },
   {
@@ -31,4 +28,4 @@ const User = db.define(
   }
 );
 
-module.exports = User;
+module.exports = Room;
